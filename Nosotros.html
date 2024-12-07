@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - Vetsis</title>
+    <link rel="icon" href="img/letra-v.png" type="image/png">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+    /* Mantenemos los estilos base que proporcionaste y agregamos los nuevos */
+    
+    /* Estilos para la sección About */
+    .about-section {
+        display: flex;
+        gap: 40px;
+        padding: 60px;
+        align-items: center;
+        margin-top: 40px;
+    }
+
+    .about-content {
+        flex: 1;
+    }
+
+    .about-image {
+        flex: 1;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .about-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-top: 30px;
+    }
+
+    .card {
+        background: rgba(124, 166, 255, 0.144);
+        backdrop-filter: blur(10px);
+        height: auto;
+        padding: 25px;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    }
+
+    .card h3 {
+        color: #fff;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .card-icon {
+        background: linear-gradient(90deg, rgba(117,0,255,1) 0%, rgba(53,1,255,1) 100%);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .card p {
+        color: rgba(255,255,255,0.8);
+        line-height: 1.6;
+    }
+
+    .about-title {
+        font-size: 2.5em;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #ffffff, #1010ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .about-description {
+        color: rgba(255,255,255,0.9);
+        line-height: 1.8;
+        margin-bottom: 30px;
+        font-size: 1.1em;
+    }
+    </style>
+</head>
+<body class="animated-gradient">
+    <div class="dashboard-container animated-gradient">
+        <header>
+            <div class="logo fade-in">
+                <a href="index.html"><img src="img/letra-v.png" alt="logo" class="logo-symbol"></a>
+            </div>
+            <nav class="fade-in">
+                <a href="index.html">Inicio</a>
+                <a href="Nosotros.html">Nosotros</a>
+                <a href="#">Productos</a>
+                <a href="Servicios.html">Servicios</a>
+                <a href="login.html" class="cssbuttons-io-button"> Iniciar Sesión
+                    <div class="icon">
+                        <svg height="27" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
+                    </div>
+                </a>
+            </nav>
+        </header>
+
+        <section class="about-section fade-in">
+            <div class="about-content">
+                <h2 class="about-title">Conoce Vetsis</h2>
+                <p class="about-description">
+                    Somos una clínica veterinaria comprometida con el bienestar y la salud de tus mascotas. Con más de 10 años de experiencia, nuestro equipo de profesionales veterinarios ofrece atención médica de calidad y servicios especializados para asegurar que tu compañero peludo reciba el mejor cuidado posible.
+                </p>
+
+                <div class="cards-container">
+                    <div class="card fade-in">
+                        <h3>
+                            <span class="card-icon">🏥</span>
+                            Atención 24/7
+                        </h3>
+                        <p>Servicio de emergencias veterinarias disponible las 24 horas, los 7 días de la semana para cuando más nos necesites.</p>
+                    </div>
+
+                    <div class="card fade-in">
+                        <h3>
+                            <span class="card-icon">👨‍⚕️</span>
+                            Equipo Profesional
+                        </h3>
+                        <p>Contamos con veterinarios certificados y personal especializado en diferentes áreas de la medicina veterinaria.</p>
+                    </div>
+
+                    <div class="card fade-in">
+                        <h3>
+                            <span class="card-icon">💉</span>
+                            Servicios Completos
+                        </h3>
+                        <p>Ofrecemos desde vacunación y cirugías hasta tratamientos especializados y servicios de grooming.</p>
+                    </div>
+
+                    <div class="card fade-in">
+                        <h3>
+                            <span class="card-icon">❤️</span>
+                            Compromiso
+                        </h3>
+                        <p>Nos dedicamos a proporcionar el mejor cuidado posible para tu mascota, tratándola como si fuera nuestra.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-image fade-in">
+                <img src="img/veterinario-trabajando.jpg" alt="Equipo veterinario trabajando">
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="social-icons">
+            <a href="https://www.instagram.com" target="_blank"><img src="img/instagram.png" alt="Instagram"></a>
+            <a href="https://www.facebook.com" target="_blank"><img src="img/facebook.png" alt="Facebook"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="img/twitter.png" alt="X"></a>
+        </div>
+        <p class="copyright">© 2024 Vetsis. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>

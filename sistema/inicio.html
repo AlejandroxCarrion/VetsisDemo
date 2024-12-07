@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../img/letra-v.png" type="image/png" sizes="32x32">
+    <title>Dashboard VETSIS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="pagina.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <aside class="sidebar" id="sidebar">
+            <button class="close-sidebar" onclick="toggleSidebar()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="logo">
+                <img src="../img/letra-v.png" alt="VETSIS Logo">
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="../sistema/inicio.html" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="productos.html" class="nav-link">
+                        <i class="fas fa-box-open"></i>
+                        <span>Productos</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="citas.html" class="nav-link">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Citas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/servicios" class="nav-link">
+                        <i class="fas fa-concierge-bell"></i>
+                        <span>Servicios</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/mascotas" class="nav-link">
+                        <i class="fas fa-paw"></i>
+                        <span>Mascotas</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/dueños" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Dueños</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/veterinarios" class="nav-link">
+                        <i class="fas fa-user-md"></i>
+                        <span>Veterinarios</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="top-bar">
+                <button class="menu-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="dropdown">
+                    <div class="user-profile" onclick="toggleDropdown()">
+                        <img src="../img/face.png" alt="User Profile">
+                        <span>Username</span>
+                        <i class="fas fa-chevron-down" style="margin-left: 8px;"></i>
+                    </div>
+                    <div class="dropdown-menu" id="userDropdown">
+                        <a href="/usuarios" class="dropdown-item">
+                            <i class="fas fa-user-circle" style="margin-right: 8px;"></i>
+                            Perfil
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/logout" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt" style="margin-right: 8px;"></i>
+                            Cerrar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modules-container">
+                <div class="modules-grid">
+                    <a href="/productos" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3>Productos</h3>
+                        <p>Gestione el inventario de productos veterinarios y suministros</p>
+                    </a>
+                    <a href="/citas" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Citas</h3>
+                        <p>Programe y administre citas veterinarias</p>
+                    </a>
+                    <a href="/servicios" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-concierge-bell"></i>
+                        </div>
+                        <h3>Servicios</h3>
+                        <p>Administre los servicios veterinarios ofrecidos en la clínica</p>
+                    </a>
+                    <a href="/mascotas" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-paw"></i>
+                        </div>
+                        <h3>Mascotas</h3>
+                        <p>Gestione los perfiles y registros médicos de las mascotas</p>
+                    </a>
+                    <a href="/dueños" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Dueños</h3>
+                        <p>Administre la información de los propietarios de mascotas</p>
+                    </a>
+                    <a href="/veterinarios" class="module-card">
+                        <div class="module-icon">
+                            <i class="fas fa-user-md"></i>
+                        </div>
+                        <h3>Veterinarios</h3>
+                        <p>Gestione la información y horarios del personal veterinario</p>
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+            document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
+        }
+
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-profile') && !event.target.matches('.user-profile *')) {
+                const dropdowns = document.getElementsByClassName('dropdown-menu');
+                for (const dropdown of dropdowns) {
+                    if (dropdown.classList.contains('show')) {
+                        dropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // Add active class to current nav item
+        const currentLocation = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentLocation) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

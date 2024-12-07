@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte PDF - VETSIS</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    .header .circle{
+        background: #333;
+        padding: 10px;
+        border-radius: 20px;
+        display: flex;
+    }
+    .header img {
+      max-height: 50px;
+    }
+    .header .contact-info {
+      text-align: right;
+    }
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .stat {
+      flex: 1;
+      background: #f7f7f7;
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 10px;
+      margin: 5px;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    table th, table td {
+      border: 1px solid #ddd;
+      text-align: center;
+      padding: 8px;
+    }
+    table th {
+      background-color: #f4f4f9;
+      font-weight: bold;
+    }
+    .chart-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="reporte">
+    <div class="header">
+      <div class="circle">
+        <img src="../img/letra-v.png" alt="Logo VETSIS">
+      </div>
+      <div class="contact-info">
+        <p><strong>VETSIS</strong></p>
+        <p>Av. Principal #123, Ciudad</p>
+        <p>Tel: +1 (555) 123-4567</p>
+        <p>Email: contacto@vetsis.com</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <h3>Total Productos</h3>
+        <p id="totalProductos">0</p>
+      </div>
+      <div class="stat">
+        <h3>Stock Bajo</h3>
+        <p id="stockBajo">0</p>
+      </div>
+      <div class="stat">
+        <h3>Valor Total</h3>
+        <p id="valorTotal">$0.00</p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+          <th>Stock</th>
+        </tr>
+      </thead>
+      <tbody id="tablaProductos">
+        <!-- Datos dinámicos -->
+      </tbody>
+    </table>
+
+    <div class="chart-container">
+      <canvas id="graficoStock"></canvas>
+    </div>
+  </div>
+
+  <button onclick="generarPDF()">Exportar a PDF</button>
+
+  <script>
+    const productos = [
+      { id: 1, nombre: "Producto A", descripcion: "Descripción A", precio: 50, stock: 5 },
+      { id: 2, nombre: "Producto B", descripcion: "Descripción B", precio: 20, stock: 15 },
+      { id: 3, nombre: "Producto C", descripcion: "Descripción C", precio: 30, stock: 25 }
+    ];
+
+    function cargarDatos() {
+      const totalProductos = productos.length;
+      const stockBajo = productos.filter(p => p.stock <= 10).length;
+      const valorTotal = productos.reduce((acc, p) => acc + p.precio * p.stock, 0);
+
+      document.getElementById("totalProductos").textContent = totalProductos;
+      document.getElementById("stockBajo").textContent = stockBajo;
+      document.getElementById("valorTotal").textContent = `$${valorTotal.toFixed(2)}`;
+
+      const tabla = document.getElementById("tablaProductos");
+      productos.forEach(producto => {
+        const fila = `
+          <tr>
+            <td>${producto.id}</td>
+            <td>${producto.nombre}</td>
+            <td>${producto.descripcion}</td>
+            <td>$${producto.precio.toFixed(2)}</td>
+            <td>${producto.stock}</td>
+          </tr>`;
+        tabla.innerHTML += fila;
+      });
+
+      generarGrafico();
+    }
+
+    function generarGrafico() {
+      const ctx = document.getElementById("graficoStock").getContext("2d");
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: productos.map(p => p.nombre),
+          datasets: [{
+            label: "Stock",
+            data: productos.map(p => p.stock),
+            backgroundColor: "rgba(75, 192, 192, 0.5)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+
+    function generarPDF() {
+      const elemento = document.getElementById("reporte");
+      const opciones = {
+        margin: 1,
+        filename: "reporte_vetsis.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
+      };
+      html2pdf().set(opciones).from(elemento).save();
+    }
+
+    // Cargar datos al cargar la página
+    document.addEventListener("DOMContentLoaded", cargarDatos);
+  </script>
+</body>
+</html>

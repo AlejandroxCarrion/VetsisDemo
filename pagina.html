@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VETSIS</title>
+  <!-- Usar Thymeleaf para incluir el archivo de estilo CSS -->
+  <link th:href="@{/css/estilop.css}" rel="stylesheet">
+</head>
+<body class="grid-container">
+<header class="header">
+  <div class="circulo-logo">
+    <!-- Usar Thymeleaf para incluir la ruta de la imagen -->
+    <a th:href="@{/pagina.html}"><img th:src="@{/img/logo2.0.png}" alt="logo"></a>
+  </div>
+  <nav class="lista">
+    <!-- Usar Thymeleaf para los enlaces de navegación -->
+    <a th:href="@{/}">Inicio</a>
+    <a th:href="@{/about}">Servicios</a>
+    <a th:href="@{/login}">Inicio de sesión</a>
+  </nav>
+</header>
+
+<article class="main">
+  <div class="text">
+    <div class="text-1">
+      <h1>VETSIS</h1>
+      <p>Somos VETSIS Clínica Veterinaria. Un equipo comprometido con la atención médica de calidad, mejorando la vida de nuestros pacientes y sus familias.</p>
+    </div>
+    <br>
+    <div class="text-2">
+      <h1>Nuestro compromiso es <b>con las mascotas</b></h1>
+      <p>El equipo médico todos los días se prepara para brindar el mejor servicio a las mascotas que lo necesiten. Es fundamental en nuestra filosofía encontrar una respuesta a todos los que nos consultan por el bienestar.</p>
+    </div>
+  </div>
+  <div class="circulo">
+    <a th:href="@{/pagina.html}"><img th:src="@{/img/logo2.0.png}" alt="logo"></a>
+  </div>
+</article>
+
+<footer class="footer">
+  <nav class="lista">
+    <!-- Usar Thymeleaf para las rutas de las redes sociales y marcar las URLs como texto literal -->
+    <a th:href="|https://web.facebook.com/?locale=es_LA&_rdc=1&_rdr|"><img th:src="@{/img/facebook.png}" alt="facebook" width="50px"></a>
+    <a th:href="|https://www.instagram.com/|"><img th:src="@{/img/Instagram.png}" alt="Instagram" width="50px"></a>
+    <a th:href="|https://twitter.com/?lang=es|"><img th:src="@{/img/twitter.png}" alt="twitter" width="50px"></a>
+  </nav>
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Simular hover al cargar la página
+    var elemento = document.querySelector('.main .text');
+    elemento.classList.add('hover-activado');
+  });
+</script>
+</body>
+</html>

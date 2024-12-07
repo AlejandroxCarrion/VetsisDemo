@@ -1,0 +1,84 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Configuración del cuerpo */
+  body {
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+  
+  /* Contenedor de transición */
+  .transition-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    z-index: 10;
+  }
+  
+  .curtain {
+    width: 50%;
+    height: 100%;
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    transition: transform 1s ease;
+  }
+  
+  .curtain-left {
+    left: 0;
+    transform: translateX(0);
+  }
+  
+  .curtain-right {
+    right: 0;
+    transform: translateX(0);
+  }
+  
+  /* Estado de apertura */
+  .open .curtain-left {
+    transform: translateX(-100%);
+  }
+  
+  .open .curtain-right {
+    transform: translateX(100%);
+  }
+  
+  /* Estilos del encabezado */
+  header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #444;
+    color: #fff;
+    z-index: 1;
+    position: relative;
+  }
+  
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* Contenido de la nueva página */
+  .hidden {
+    display: none;
+  }
+  
+  #mainContent {
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Registro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+<section>
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-xl-10">
+                <div class="content glow card rounded-3 text-black">
+                    <div class="row g-0">
+                        <div class="col-lg-6">
+                            <div class="card-body p-md-5 mx-md-4">
+                                <div class="text-center">
+                                    <a href="#"><img src="/img/logo2.0.png" alt="logo" width="150px"></a>
+                                    <h4 class="mt-1 mb-5 pb-1">VETSIS</h4>
+                                </div>
+                                <form id="registroForm" method="POST" action="sistema/inicio.html" class="needs-validation" novalidate>
+                                    <h5>Registro</h5>
+                                    <br>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="nombreUsuario">Nombre de usuario</label>
+                                        <input type="text" name="nombreUsuario" id="nombreUsuario" class="form-control" placeholder="Nombre de usuario" required minlength="3"/>
+                                        <div class="invalid-feedback">Por favor, ingresa un nombre de usuario de al menos 3 caracteres.</div>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="contraseña">Contraseña</label>
+                                        <input type="password" name="contraseña" id="contraseña" placeholder="Ingresa la contraseña" class="form-control" required minlength="6"/>
+                                        <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <label class="form-label" for="confirmarContraseña">Confirmar Contraseña</label>
+                                        <input type="password" name="confirmarContraseña" id="confirmarContraseña" placeholder="Confirma la contraseña" class="form-control" required/>
+                                        <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                                    </div>
+                                    <div class="text-center pt-1 mb-5 pb-1">
+                                        <button class="btn btn-primary btn-block fa-lg mb-3" type="submit">Registrarse</button>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center pb-4">
+                                        <p class="mb-0 me-2">Ya tienes cuenta?</p>
+                                        <a href="/login" class="btn btn-outline-danger">Iniciar sesión</a>
+                                    </div>
+                                    <!-- Mensajes de éxito o error -->
+                                    <div class="alert alert-success" id="successMessage" style="display:none;">Registro exitoso. Puedes iniciar sesión.</div>
+                                    <div class="alert alert-danger" id="errorMessage" style="display:none;"></div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center">
+                            <img src="/img/animales-login.png" class="img-login" alt="" width="700px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<script>
+    (function () {
+        'use strict'
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+
+                    // Validación adicional para confirmar contraseña
+                    var password = document.getElementById('contraseña')
+                    var confirmPassword = document.getElementById('confirmarContraseña')
+                    if (password.value !== confirmPassword.value) {
+                        confirmPassword.setCustomValidity('Las contraseñas no coinciden')
+                    } else {
+                        confirmPassword.setCustomValidity('')
+                    }
+
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>
+</body>
+</html>

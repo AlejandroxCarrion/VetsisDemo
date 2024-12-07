@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../img/letra-v.png" type="image/png" sizes="32x32" />
+    <title>Productos - VETSIS</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.css"
+    />
+    <link
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.bootstrap5.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="pagina.css" />
+    <style>
+      :root {
+        --sidebar-width: 250px;
+        --primary-color: #002fffce;
+        --bg-base: #121212;
+        --bg-highlight: #282828;
+        --bg-press: #181818;
+        --text-base: #ffffff;
+        --text-subdued: #a7a7a7;
+        --sidebar-highlight: rgba(255, 255, 255, 0.1);
+        --danger: #dc3545;
+        --success: #198754;
+        --warning: #ffc107;
+      }
+
+      /* Heredamos los estilos base existentes */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        background-color: var(--bg-base);
+        color: var(--text-base);
+        line-height: 1.5;
+      }
+
+      /* Estilos específicos para el módulo de productos */
+      .products-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background: var(--bg-highlight);
+        padding: 1.5rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+      }
+
+      .stat-info h3 {
+        font-size: 0.875rem;
+        color: var(--text-subdued);
+      }
+
+      .stat-info p {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-top: 0.25rem;
+      }
+
+      .btn {
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s;
+      }
+
+      .btn-primary {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        opacity: 0.9;
+      }
+
+      /* DataTables personalización */
+      .dataTables_wrapper {
+        background: var(--bg-highlight);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 1rem;
+      }
+
+      table.dataTable {
+        color: var(--text-base) !important;
+        background: var(--bg-highlight);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      table.dataTable thead th {
+        background: var(--bg-press);
+        color: var(--text-base);
+        border-bottom: 2px solid var(--primary-color);
+        padding: 1rem;
+      }
+
+      table.dataTable tbody td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--bg-press);
+      }
+
+      .stock-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .stock-low {
+        background: var(--danger);
+        color: white;
+      }
+
+      .stock-medium {
+        background: var(--warning);
+        color: black;
+      }
+
+      .stock-good {
+        background: var(--success);
+        color: white;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background: var(--bg-highlight);
+        padding: 2rem;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px;
+        position: relative;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        color: var(--text-base);
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-subdued);
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid var(--bg-press);
+        background: var(--bg-base);
+        color: var(--text-base);
+      }
+
+      .chart-container {
+        background: var(--bg-highlight);
+        padding: 1.5rem;
+        border-radius: 12px;
+        margin-top: 2rem;
+      }
+
+      /* Acciones en tabla */
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        color: white;
+      }
+
+      .btn-edit {
+        background: var(--primary-color);
+      }
+
+      .btn-delete {
+        background: var(--danger);
+      }
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+
+        .dataTables_wrapper {
+          color: #000;
+          background: white !important;
+          padding: 0 !important;
+        }
+
+        table.dataTable {
+          color: black !important;
+          background: white !important;
+        }
+
+        table.dataTable thead th {
+          background: #f8f9fa !important;
+          color: black !important;
+          border-bottom: 2px solid #dee2e6 !important;
+        }
+
+        .stock-badge {
+          border: 1px solid #000 !important;
+          padding: 2px 8px !important;
+        }
+
+        .stock-low {
+          background: #ffcdd2 !important;
+        }
+        .stock-medium {
+          background: #fff3cd !important;
+        }
+        .stock-good {
+          background: #c8e6c9 !important;
+        }
+
+        /* Agregar resumen de estadísticas */
+        .print-summary {
+          margin-bottom: 20px;
+          padding: 15px;
+          border: 1px solid #dee2e6;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+      <aside class="sidebar" id="sidebar">
+        <button class="close-sidebar" onclick="toggleSidebar()">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="logo">
+          <img src="../img/letra-v.png" alt="VETSIS Logo" />
+        </div>
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="../sistema/inicio.html" class="nav-link">
+              <i class="fas fa-home"></i>
+              <span>Inicio</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="productos.html" class="nav-link active">
+              <i class="fas fa-box-open"></i>
+              <span>Productos</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="citas.html" class="nav-link">
+              <i class="fas fa-calendar-alt"></i>
+              <span>Citas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/servicios" class="nav-link">
+              <i class="fas fa-concierge-bell"></i>
+              <span>Servicios</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/mascotas" class="nav-link">
+              <i class="fas fa-paw"></i>
+              <span>Mascotas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/dueños" class="nav-link">
+              <i class="fas fa-users"></i>
+              <span>Dueños</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/veterinarios" class="nav-link">
+              <i class="fas fa-user-md"></i>
+              <span>Veterinarios</span>
+            </a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-content">
+        <div class="top-bar">
+          <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="dropdown">
+            <div class="user-profile" onclick="toggleDropdown()">
+              <img src="../img/face.png" alt="User Profile" />
+              <span>Username</span>
+              <i class="fas fa-chevron-down" style="margin-left: 8px"></i>
+            </div>
+            <div class="dropdown-menu" id="userDropdown">
+              <a href="/usuarios" class="dropdown-item">
+                <i class="fas fa-user-circle" style="margin-right: 8px"></i>
+                Perfil
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="/logout" class="dropdown-item">
+                <i class="fas fa-sign-out-alt" style="margin-right: 8px"></i>
+                Cerrar sesión
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="modules-container">
+          <div class="products-header">
+            <h2>Gestión de Productos</h2>
+            <button class="btn btn-primary" onclick="openModal()">
+              <i class="fas fa-plus"></i>
+              Nuevo Producto
+            </button>
+          </div>
+
+          <div class="stats-container">
+            <div class="stat-card">
+              <div
+                class="stat-icon"
+                style="
+                  background: rgba(0, 47, 255, 0.1);
+                  color: var(--primary-color);
+                "
+              >
+                <i class="fas fa-box"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Total Productos</h3>
+                <p id="totalProducts">0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div
+                class="stat-icon"
+                style="background: rgba(220, 53, 69, 0.1); color: var(--danger)"
+              >
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Stock Bajo</h3>
+                <p id="lowStock">0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div
+                class="stat-icon"
+                style="
+                  background: rgba(25, 135, 84, 0.1);
+                  color: var(--success);
+                "
+              >
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Valor Total</h3>
+                <p id="totalValue">$0</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dataTables_wrapper">
+            <table
+              id="productsTable"
+              class="table table-dark table-striped"
+              style="width: 100%"
+            >
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Datos serán cargados dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="chart-container">
+            <canvas id="stockChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Modal para nuevo/editar producto -->
+        <div class="modal" id="productModal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 id="modalTitle">Nuevo Producto</h3>
+              <button class="modal-close" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <form id="productForm">
+              <div class="form-group">
+                <label for="nombre">Nombre del Producto</label>
+                <input
+                  type="text"
+                  id="nombre"
+                  name="nombre"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="descripcion">Descripción</label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  class="form-control"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="precio">Precio</label>
+                <input
+                  type="number"
+                  id="precio"
+                  name="precio"
+                  class="form-control"
+                  step="0.01"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="stock">Stocfk</label>
+                <input
+                  type="number"
+                  id="stock"
+                  name="stock"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%">
+                Guardar Producto
+              </button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+    <script>
+      // Datos de ejemplo
+      const productos = [
+        {
+          id: 1,
+          nombre: "Vitaminas Can",
+          descripcion: "Suplemento vitamínico para perros",
+          precio: 25.99,
+          stock: 45,
+        },
+        {
+          id: 2,
+          nombre: "Antiparasitario Fel",
+          descripcion: "Antiparasitario para gatos",
+          precio: 15.5,
+          stock: 8,
+        },
+        {
+          id: 3,
+          nombre: "Shampoo Medicado",
+          descripcion: "Shampoo para tratamiento de piel",
+          precio: 12.99,
+          stock: 30,
+        },
+        {
+          id: 4,
+          nombre: "Comida Balanceada Perro",
+          descripcion: "Alimento seco para perros adultos",
+          precio: 35.75,
+          stock: 50,
+        },
+        {
+          id: 5,
+          nombre: "Comida Balanceada Gato",
+          descripcion: "Alimento seco para gatos adultos",
+          precio: 33.25,
+          stock: 60,
+        }
+      ];
+
+      // Inicializar DataTable con botones
+      $(document).ready(function () {
+        const table = $("#productsTable").DataTable({
+          data: productos,
+          dom: "Bfrtip", // Agrega los botones al DOM
+          buttons: [
+            {
+              extend: "copy",
+              text: '<i class="fas fa-copy"></i> Copiar',
+              className: "btn btn-primary btn-sm",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4], // Excluye la columna de acciones
+              },
+            },
+            {
+              extend: "csv",
+              text: '<i class="fas fa-file-csv"></i> CSV',
+              className: "btn btn-primary btn-sm",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+              },
+            },
+            {
+              extend: "excel",
+              text: '<i class="fas fa-file-excel"></i> Excel',
+              className: "btn btn-primary btn-sm",
+              title: "Reporte de Productos",
+              messageTop: "Inventario actual de productos",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+              },
+              customize: function (xlsx) {
+                var sheet = xlsx.xl.worksheets["sheet1.xml"];
+                $("row:first c", sheet).attr("s", "2");
+              },
+            },
+            {
+              extend: "pdf",
+              text: '<i class="fas fa-file-pdf"></i> PDF',
+              className: "btn btn-primary btn-sm",
+              title: "Reporte de Productos",
+              messageTop: "Inventario actual de productos",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+              },
+              customize: function (doc) {
+                doc.content[0].text = "VETSIS - Reporte de Productos"; // Título
+                doc.styles.tableHeader = {
+                  fillColor: "#002fffce",
+                  color: "white",
+                  fontSize: 11,
+                  bold: true,
+                };
+
+                const contactInfo = {
+                  nombre: "VETSIS",
+                  direccion: "Av. Principal #123, Ciudad",
+                  telefono: "+1 (555) 123-4567",
+                  email: "contacto@vetsis.com",
+                };
+                doc.defaultStyle = {
+                  font: "Roboto",
+                  fontSize: 10,
+                };
+                // Estilos personalizados
+                doc.styles = {
+                  header: {
+                    fontSize: 18,
+                    bold: true,
+                    margin: [0, 0, 0, 5],
+                  },
+                  subheader: {
+                    fontSize: 12,
+                    margin: [0, 0, 0, 3],
+                  },
+                  tableHeader: {
+                    fillColor: "#002fffce",
+                    color: "white",
+                    fontSize: 11,
+                    bold: true,
+                  },
+                };
+                // Agregar encabezado con información de contacto
+                doc.content.splice(1, 0, {
+                  margin: [0, 0, 0, 12],
+                  alignment: "center",
+                  columns: [
+                    {
+                      text: [
+                        { text: contactInfo.nombre + "\n", style: "header" },
+                        {
+                          text: contactInfo.direccion + "\n",
+                          style: "subheader",
+                        },
+                        {
+                          text: "Tel: " + contactInfo.telefono + "\n",
+                          style: "subheader",
+                        },
+                        {
+                          text: "Email: " + contactInfo.email + "\n",
+                          style: "subheader",
+                        },
+                      ],
+                    },
+                  ],
+                });
+                // Agregar resumen de estadísticas
+                doc.content.splice(2, 0, {
+                  columns: [
+                    {
+                      text: [
+                        { text: "Total Productos: ", bold: true },
+                        document.getElementById("totalProducts").textContent +
+                          "\n",
+                        { text: "Stock Bajo: ", bold: true },
+                        document.getElementById("lowStock").textContent + "\n",
+                        { text: "Valor Total: ", bold: true },
+                        document.getElementById("totalValue").textContent,
+                      ],
+                    },
+                  ],
+                  margin: [0, 0, 0, 20],
+                });
+                doc.footer = function (currentPage, pageCount) {
+                  return {
+                    columns: [
+                      {
+                        text: contactInfo.nombre + " - " + contactInfo.telefono,
+                        alignment: "left",
+                      },
+                      {
+                        text:
+                          "Página " +
+                          currentPage.toString() +
+                          " de " +
+                          pageCount,
+                        alignment: "right",
+                      },
+                    ],
+                    margin: [40, 10, 40, 0],
+                  };
+                };
+              },
+            },
+            {
+              extend: "print",
+              text: '<i class="fas fa-print"></i> Imprimir',
+              className: "btn btn-primary btn-sm",
+              exportOptions: {
+                columns: [0, 1, 2, 3, 4],
+              },
+              customize: function (win) {
+                $(win.document.body).css("font-size", "10pt").prepend(`
+                <div class="print-summary">
+                    <h3 style="text-align: center; margin-bottom: 20px;">VETSIS - Reporte de Productos</h3>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                        <div>
+                            <strong>Total Productos:</strong>
+                            <br>${
+                              document.getElementById("totalProducts")
+                                .textContent
+                            }
+                        </div>
+                        <div>
+                            <strong>Productos con Stock Bajo:</strong>
+                            <br>${
+                              document.getElementById("lowStock").textContent
+                            }
+                        </div>
+                        <div>
+                            <strong>Valor Total del Inventario:</strong>
+                            <br>${
+                              document.getElementById("totalValue").textContent
+                            }
+                        </div>
+                    </div>
+                </div>
+            `);
+              },
+            },
+            {
+              extend: "colvis",
+              text: '<i class="fas fa-columns"></i> Columnas',
+              className: "btn btn-primary btn-sm",
+            },
+          ],
+          columns: [
+            { data: "id" },
+            { data: "nombre" },
+            { data: "descripcion" },
+            {
+              data: "precio",
+              render: function (data) {
+                return `$${data.toFixed(2)}`;
+              },
+            },
+            { data: "stock" },
+            {
+              data: "stock",
+              render: function (data) {
+                let badge = "";
+                if (data <= 10) {
+                  badge = `<span class="stock-badge stock-low">Bajo</span>`;
+                } else if (data <= 20) {
+                  badge = `<span class="stock-badge stock-medium">Medio</span>`;
+                } else {
+                  badge = `<span class="stock-badge stock-good">Bueno</span>`;
+                }
+                return badge;
+              },
+            },
+            {
+              data: null,
+              render: function (data) {
+                return `
+                            <div class="action-buttons">
+                                <button class="btn-icon btn-edit" onclick="editProduct(${data.id})">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="deleteProduct(${data.id})">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        `;
+              },
+            },
+          ],
+          language: {
+            url: "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json",
+            buttons: {
+              copy: "Copiar",
+              csv: "CSV",
+              excel: "Excel",
+              pdf: "PDF",
+              print: "Imprimir",
+              colvis: "Columnas",
+            },
+          },
+        });
+
+        // Actualizar estadísticas
+        updateStats();
+
+        // Inicializar gráfico
+        initChart();
+      });
+
+      // Funciones para el modal
+      function openModal() {
+        document.getElementById("productModal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("productModal").classList.remove("active");
+      }
+
+      // Actualizar estadísticas
+      function updateStats() {
+        document.getElementById("totalProducts").textContent = productos.length;
+        document.getElementById("lowStock").textContent = productos.filter(
+          (p) => p.stock <= 10
+        ).length;
+        const totalValue = productos.reduce(
+          (sum, p) => sum + p.precio * p.stock,
+          0
+        );
+        document.getElementById(
+          "totalValue"
+        ).textContent = `$${totalValue.toFixed(2)}`;
+      }
+
+      // Inicializar gráfico
+      function initChart() {
+        const ctx = document.getElementById("stockChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: productos.map((p) => p.nombre),
+            datasets: [
+              {
+                label: "Nivel de Stock",
+                data: productos.map((p) => p.stock),
+                backgroundColor: productos.map((p) => {
+                  if (p.stock <= 10) return "rgba(220, 53, 69, 0.8)"; // Rojo para stock bajo
+                  if (p.stock <= 20) return "rgba(255, 193, 7, 0.8)"; // Amarillo para stock medio
+                  return "rgba(25, 135, 84, 0.8)"; // Verde para stock bueno
+                }),
+                borderColor: "rgba(255, 255, 255, 0.1)",
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: true,
+                    fontColor: "#A7A7A7",
+                  },
+                  gridLines: {
+                    color: "rgba(255, 255, 255, 0.1)",
+                  },
+                },
+              ],
+              xAxes: [
+                {
+                  ticks: {
+                    fontColor: "#A7A7A7",
+                  },
+                  gridLines: {
+                    color: "rgba(255, 255, 255, 0.1)",
+                  },
+                },
+              ],
+            },
+            legend: {
+              labels: {
+                fontColor: "#A7A7A7",
+              },
+            },
+          },
+        });
+      }
+
+      // Función para editar producto
+      function editProduct(id) {
+        const producto = productos.find((p) => p.id === id);
+        if (producto) {
+          document.getElementById("modalTitle").textContent = "Editar Producto";
+          document.getElementById("nombre").value = producto.nombre;
+          document.getElementById("descripcion").value = producto.descripcion;
+          document.getElementById("precio").value = producto.precio;
+          document.getElementById("stock").value = producto.stock;
+
+          // Agregar el ID del producto al formulario
+          const form = document.getElementById("productForm");
+          form.dataset.editId = id;
+
+          openModal();
+        }
+      }
+
+      // Función para eliminar producto
+      function deleteProduct(id) {
+        if (confirm("¿Está seguro de que desea eliminar este producto?")) {
+          const index = productos.findIndex((p) => p.id === id);
+          if (index !== -1) {
+            productos.splice(index, 1);
+            $("#productsTable").DataTable().clear().rows.add(productos).draw();
+            updateStats();
+            initChart();
+          }
+        }
+      }
+
+      // Manejar el envío del formulario
+      document
+        .getElementById("productForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const formData = {
+            nombre: document.getElementById("nombre").value,
+            descripcion: document.getElementById("descripcion").value,
+            precio: parseFloat(document.getElementById("precio").value),
+            stock: parseInt(document.getElementById("stock").value),
+          };
+
+          const editId = this.dataset.editId;
+
+          if (editId) {
+            // Actualizar producto existente
+            const index = productos.findIndex((p) => p.id === parseInt(editId));
+            if (index !== -1) {
+              productos[index] = { ...productos[index], ...formData };
+            }
+            delete this.dataset.editId;
+          } else {
+            // Agregar nuevo producto
+            const newId = Math.max(...productos.map((p) => p.id)) + 1;
+            productos.push({ id: newId, ...formData });
+          }
+
+          // Actualizar tabla y estadísticas
+          $("#productsTable").DataTable().clear().rows.add(productos).draw();
+          updateStats();
+          initChart();
+
+          // Limpiar y cerrar modal
+          this.reset();
+          closeModal();
+        });
+    </script>
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.querySelector(".sidebar-overlay").classList.toggle("active");
+        document.body.style.overflow =
+          document.body.style.overflow === "hidden" ? "" : "hidden";
+      }
+
+      function toggleDropdown() {
+        document.getElementById("userDropdown").classList.toggle("show");
+      }
+
+      // Close dropdown when clicking outside
+      window.onclick = function (event) {
+        if (
+          !event.target.matches(".user-profile") &&
+          !event.target.matches(".user-profile *")
+        ) {
+          const dropdowns = document.getElementsByClassName("dropdown-menu");
+          for (const dropdown of dropdowns) {
+            if (dropdown.classList.contains("show")) {
+              dropdown.classList.remove("show");
+            }
+          }
+        }
+      };
+
+      // Add active class to current nav item
+      const currentLocation = window.location.pathname;
+      const navLinks = document.querySelectorAll(".nav-link");
+      navLinks.forEach((link) => {
+        if (link.getAttribute("href") === currentLocation) {
+          link.classList.add("active");
+        } else {
+          link.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
